@@ -1,0 +1,60 @@
+syntax = "proto2";
+package hw.trezor.messages.tron;
+
+option java_package = "com.satoshilabs.trezor.lib.protobuf";
+option java_outer_classname = "TrezorMessageTron";
+
+message TronGetAddress {
+    repeated uint32 address_n = 1;
+    optional bool show_display = 2;
+}
+
+message TronAddress {
+    optional string address = 1;
+}
+
+message TronSignMessage {
+    repeated uint32 address_n = 1;
+    required bytes message = 2;
+}
+
+message TronMessageSignature {
+    required bytes address = 1;
+    required bytes signature = 2;
+}
+
+message TronSignTx {
+    repeated uint32 address_n = 1;
+    required bytes ref_block_bytes = 2;
+    required bytes ref_block_hash = 3;
+    required uint64 expiration = 4;
+    optional string data = 5;
+    required TronContract contract = 6;
+    required uint64 timestamp = 7;
+    optional uint64 fee_limit = 8;
+
+    message TronContract {
+        message TronTransferContract {
+            optional string to_address = 2;
+            optional uint64 amount = 3;
+            optional string owner_address = 4;
+        }
+
+        message TronTriggerSmartContract {
+            optional string contract_address = 2;
+            optional uint64 call_value = 3;
+            optional bytes data = 4;
+            optional uint64 call_token_value = 5;
+            optional uint64 asset_id = 6;
+            optional string owner_address = 7;
+        }
+
+        optional TronTransferContract transfer_contract = 1;
+        optional TronTriggerSmartContract trigger_smart_contract = 2;
+    }
+}
+
+message TronSignedTx {
+    required bytes signature = 1;
+    optional bytes serialized_tx = 2;
+}

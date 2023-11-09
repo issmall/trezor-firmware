@@ -48,6 +48,7 @@ from . import (
     settings,
     stellar,
     tezos,
+    tron,
     with_client,
 )
 
@@ -80,6 +81,7 @@ COMMAND_ALIASES = {
     "xrp": ripple.cli,
     "xlm": stellar.cli,
     "xtz": tezos.cli,
+    "trx": tron.cli,
     # firmware aliases:
     "fw": firmware.cli,
     "update-firmware": firmware.update,

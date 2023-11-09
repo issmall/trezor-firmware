@@ -190,6 +190,14 @@ def _find_message_handler_module(msg_type: int) -> str:
         if msg_type == MessageType.BinanceSignTx:
             return "apps.binance.sign_tx"
 
+        # tron
+        if msg_type == MessageType.TronGetAddress:
+            return 'apps.tron.get_address'
+        if msg_type == MessageType.TronSignMessage:
+            return 'apps.tron.sign_message'
+        if msg_type == MessageType.TronSignTx:
+            return 'apps.tron.sign_tx'
+
     raise ValueError
 
 

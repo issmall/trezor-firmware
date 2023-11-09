@@ -713,6 +713,22 @@ if not utils.BITCOIN_ONLY:
     import apps.tezos.layout
     apps.tezos.sign_tx
     import apps.tezos.sign_tx
+    apps.tron
+    import apps.tron
+    apps.tron.address
+    import apps.tron.address
+    apps.tron.get_address
+    import apps.tron.get_address
+    apps.tron.layout
+    import apps.tron.layout
+    apps.tron.serialize
+    import apps.tron.serialize
+    apps.tron.sign_message
+    import apps.tron.sign_message
+    apps.tron.sign_tx
+    import apps.tron.sign_tx
+    apps.tron.tokens
+    import apps.tron.tokens
     apps.webauthn
     import apps.webauthn
     apps.webauthn.add_resident_credential

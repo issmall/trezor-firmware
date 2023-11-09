@@ -254,6 +254,12 @@ if TYPE_CHECKING:
         WebAuthnCredentials = 801
         WebAuthnAddResidentCredential = 802
         WebAuthnRemoveResidentCredential = 803
+        TronGetAddress = 900
+        TronAddress = 901
+        TronSignMessage = 902
+        TronMessageSignature = 903
+        TronSignTx = 904
+        TronSignedTx = 905
 
     class FailureType(IntEnum):
         UnexpectedMessage = 1

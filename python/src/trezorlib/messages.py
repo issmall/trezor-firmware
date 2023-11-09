@@ -262,6 +262,12 @@ class MessageType(IntEnum):
     WebAuthnCredentials = 801
     WebAuthnAddResidentCredential = 802
     WebAuthnRemoveResidentCredential = 803
+    TronGetAddress = 900
+    TronAddress = 901
+    TronSignMessage = 902
+    TronMessageSignature = 903
+    TronSignTx = 904
+    TronSignedTx = 905
 
 
 class FailureType(IntEnum):
@@ -7567,3 +7573,159 @@ class WebAuthnCredential(protobuf.MessageType):
         self.use_sign_count = use_sign_count
         self.algorithm = algorithm
         self.curve = curve
+
+# Tron
+class TronGetAddress(protobuf.MessageType):
+    MESSAGE_WIRE_TYPE = 900
+    FIELDS = {
+        1: protobuf.Field('address_n', 'uint32', repeated=True, required=False),
+        2: protobuf.Field('show_display', 'bool', repeated=False, required=False),
+    }
+
+    def __init__(self, *, address_n: Optional[Sequence['int']] = None, show_display: Optional['bool'] = None) -> None:
+        self.address_n: Sequence['int'] = address_n if address_n is not None else []
+        self.show_display = show_display
+
+class TronAddress(protobuf.MessageType):
+    MESSAGE_WIRE_TYPE = 901
+    FIELDS = {
+        1: protobuf.Field('address', 'string', repeated=False, required=False),
+    }
+
+    def __init__(self, *, address: Optional['str'] = None) -> None:
+        self.address = address
+
+class TronSignMessage(protobuf.MessageType):
+    MESSAGE_WIRE_TYPE = 902
+    FIELDS = {
+        1: protobuf.Field('address_n', 'uint32', repeated=True, required=False),
+        2: protobuf.Field('message', 'bytes', repeated=False, required=True),
+    }
+
+    def __init__(self, *, message: 'bytes', address_n: Optional[Sequence['int']] = None) -> None:
+        self.address_n: Sequence['int'] = address_n if address_n is not None else []
+        self.message = message
+
+class TronMessageSignature(protobuf.MessageType):
+    MESSAGE_WIRE_TYPE = 903
+    FIELDS = {
+        1: protobuf.Field('address', 'bytes', repeated=False, required=True),
+        2: protobuf.Field('signature', 'bytes', repeated=False, required=True),
+    }
+
+    def __init__(self, *, address: 'bytes', signature: 'bytes') -> None:
+        self.address = address
+        self.signature = signature
+
+class TronSignTx(protobuf.MessageType):
+    MESSAGE_WIRE_TYPE = 904
+    FIELDS = {
+        1: protobuf.Field('address_n', 'uint32', repeated=True, required=False),
+        2: protobuf.Field('ref_block_bytes', 'bytes', repeated=False, required=True),
+        3: protobuf.Field('ref_block_hash', 'bytes', repeated=False, required=True),
+        4: protobuf.Field('expiration', 'uint64', repeated=False, required=True),
+        5: protobuf.Field('data', 'string', repeated=False, required=False),
+        6: protobuf.Field('contract', 'TronContract', repeated=False, required=True),
+        7: protobuf.Field('timestamp', 'uint64', repeated=False, required=True),
+        8: protobuf.Field('fee_limit', 'uint64', repeated=False, required=False),
+    }
+
+    def __init__(
+            self,
+            *,
+            ref_block_bytes: 'bytes',
+            ref_block_hash: 'bytes',
+            expiration: 'int',
+            contract: 'TronContract',
+            timestamp: 'int',
+            address_n: Optional[Sequence['int']] = None,
+            data: Optional['str'] = None,
+            fee_limit: Optional['int'] = None,
+    ) -> None:
+        self.address_n: Sequence['int'] = address_n if address_n is not None else []
+        self.ref_block_bytes = ref_block_bytes
+        self.ref_block_hash = ref_block_hash
+        self.expiration = expiration
+        self.contract = contract
+        self.timestamp = timestamp
+        self.data = data
+        self.fee_limit = fee_limit
+
+class TronSignedTx(protobuf.MessageType):
+    MESSAGE_WIRE_TYPE = 905
+    FIELDS = {
+        1: protobuf.Field('signature', 'bytes', repeated=False, required=True),
+        2: protobuf.Field('serialized_tx', 'bytes', repeated=False, required=False),
+    }
+
+    def __init__(
+            self,
+            *,
+            signature: 'bytes',
+            serialized_tx: Optional['bytes'] = None,
+    ) -> None:
+        self.signature = signature
+        self.serialized_tx = serialized_tx
+
+class TronContract(protobuf.MessageType):
+    MESSAGE_WIRE_TYPE = None
+    FIELDS = {
+        1: protobuf.Field('transfer_contract', 'TronTransferContract', repeated=False, required=False),
+        2: protobuf.Field('trigger_smart_contract', 'TronTriggerSmartContract', repeated=False, required=False),
+    }
+
+    def __init__(
+            self,
+            *,
+            transfer_contract: Optional['TronTransferContract'] = None,
+            trigger_smart_contract: Optional['TronTriggerSmartContract'] = None,
+    ) -> None:
+        self.transfer_contract = transfer_contract
+        self.trigger_smart_contract = trigger_smart_contract
+
+class TronTransferContract(protobuf.MessageType):
+    MESSAGE_WIRE_TYPE = None
+    FIELDS = {
+        2: protobuf.Field('to_address', 'string', repeated=False, required=False),
+        3: protobuf.Field('amount', 'uint64', repeated=False, required=False),
+        4: protobuf.Field('owner_address', 'string', repeated=False, required=False),
+    }
+
+    def __init__(
+            self,
+            *,
+            to_address: Optional['str'] = None,
+            amount: Optional['int'] = None,
+            owner_address: Optional['str'] = None,
+    ) -> None:
+        self.to_address = to_address
+        self.amount = amount
+        self.owner_address = owner_address
+
+class TronTriggerSmartContract(protobuf.MessageType):
+    MESSAGE_WIRE_TYPE = None
+    FIELDS = {
+        2: protobuf.Field('contract_address', 'string', repeated=False, required=False),
+        3: protobuf.Field('call_value', 'uint64', repeated=False, required=False),
+        4: protobuf.Field('data', 'bytes', repeated=False, required=False),
+        5: protobuf.Field('call_token_value', 'uint64', repeated=False, required=False),
+        6: protobuf.Field('asset_id', 'uint64', repeated=False, required=False),
+        7: protobuf.Field('owner_address', 'string', repeated=False, required=False),
+    }
+
+    def __init__(
+            self,
+            *,
+            contract_address: Optional['str'] = None,
+            call_value: Optional['int'] = None,
+            data: Optional['bytes'] = None,
+            call_token_value: Optional['int'] = None,
+            asset_id: Optional['int'] = None,
+            owner_address: Optional['str'] = None,
+    ) -> None:
+        self.contract_address = contract_address
+        self.call_value = call_value
+        self.data = data
+        self.call_token_value = call_token_value
+        self.asset_id = asset_id
+        self.owner_address = owner_address

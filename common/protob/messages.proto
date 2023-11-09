@@ -362,4 +362,12 @@ enum MessageType {
     MessageType_WebAuthnCredentials = 801 [(wire_out) = true];
     MessageType_WebAuthnAddResidentCredential = 802 [(wire_in) = true];
     MessageType_WebAuthnRemoveResidentCredential = 803 [(wire_in) = true];
+
+    // Tron
+    MessageType_TronGetAddress = 900 [(wire_in) = true];
+    MessageType_TronAddress = 901 [(wire_out) = true];
+    MessageType_TronSignMessage = 902 [(wire_in) = true];
+    MessageType_TronMessageSignature = 903 [(wire_out) = true];
+    MessageType_TronSignTx = 904 [(wire_in) = true];
+    MessageType_TronSignedTx = 905 [(wire_out) = true];
 }
